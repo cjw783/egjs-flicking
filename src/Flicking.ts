@@ -1715,6 +1715,8 @@ class Flicking extends Component<FlickingEvents> {
    * @return {this}
    */
   public async resize(): Promise<void> {
+    if (this._isResizing) return;
+    
     this._isResizing = true;
 
     const viewport = this._viewport;
