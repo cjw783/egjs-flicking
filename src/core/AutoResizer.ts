@@ -35,14 +35,14 @@ class AutoResizer {
       const viewportSizeNot0 = viewport.width !== 0 || viewport.height !== 0;
 
       const resizeObserver = viewportSizeNot0
-        ? new ResizeObserver((entries) => this._skipFirstResize(entries))
-        : new ResizeObserver((entries) => this._onResize(entries));
+        ? new ResizeObserver((entries: ResizeObserverEntry[]) => this._skipFirstResize(entries))
+        : new ResizeObserver((entries: ResizeObserverEntry[]) => this._onResize(entries));
 
       resizeObserver.observe(flicking.viewport.element);
 
       this._resizeObserver = resizeObserver;
     } else {
-      window.addEventListener("resize", this._onResize);
+      window.addEventListener("resize", () => this._onResize([]));
     }
 
     this._enabled = true;
@@ -58,7 +58,7 @@ class AutoResizer {
       resizeObserver.disconnect();
       this._resizeObserver = null;
     } else {
-      window.removeEventListener("resize", this._onResize);
+      window.removeEventListener("resize", () => this._onResize([]));
     }
 
     this._enabled = false;
@@ -66,29 +66,30 @@ class AutoResizer {
     return this;
   }
 
-  private _onResize = (entries: any) => {
+  private _onResize = (entries: ResizeObserverEntry[]) => {
     const flicking = this._flicking;
     const resizeDebounce = flicking.resizeDebounce;
     const maxResizeDebounce = flicking.maxResizeDebounce;
 
-    const resizeEntryInfo = entries[0].contentRect;
+    if (entries.length) {
+      const resizeEntryInfo = entries[0].contentRect;
+      const beforeSize = {
+        width: flicking.viewport.width,
+        height: flicking.viewport.height
+      };
 
-    const beforeSize = {
-      width: flicking.viewport.width,
-      height: flicking.viewport.height
-    };
+      const afterSize = {
+        width: resizeEntryInfo.width,
+        height: resizeEntryInfo.height
+      };
 
-    const afterSize = {
-      width: resizeEntryInfo.width,
-      height: resizeEntryInfo.height
-    };
-
-    // resize 이벤트가 발생했으나 이전과 width, height의 변화가 없다면 이후 로직을 진행하지 않는다.
-    if (
-      beforeSize.height === afterSize.height &&
-      beforeSize.width === afterSize.width
-    ) {
-      return;
+      // resize 이벤트가 발생했으나 이전과 width, height의 변화가 없다면 이후 로직을 진행하지 않는다.
+      if (
+        beforeSize.height === afterSize.height &&
+        beforeSize.width === afterSize.width
+      ) {
+        return;
+      }
     }
 
     if (resizeDebounce <= 0) {
