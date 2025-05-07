@@ -93,7 +93,9 @@ class Camera {
       : this._viewport.height;
     
     // Calculate the target position to center the current panel
-    this._targetPosition = currentPanel.position + (viewportSize - currentPanel.size) / 2;
+    // We need to use negative panel position because camera movement is opposite to panel positioning
+    // When we want to show panel at index 1, we need to move the camera in the opposite direction
+    this._targetPosition = -currentPanel.position + (viewportSize - currentPanel.size) / 2;
     
     // Set current position to target immediately (without animation)
     this._position = this._targetPosition;

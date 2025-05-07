@@ -47,8 +47,9 @@ class Panel {
    * Calculate panel's position using its offset and size
    */
   private calculatePosition(): void {
-    // Position is calculated based on the panel's size and alignment
-    this._position = -this._size * this._align;
+    // Position is calculated based on the panel's index, size and alignment
+    // Each panel should be positioned sequentially based on its index
+    this._position = (this._index * this._size) - (this._size * this._align);
   }
   
   /**

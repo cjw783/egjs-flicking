@@ -311,6 +311,37 @@ flicking.on("ready", function() { ... });
 cp dist/flicking.js dist/flicking.css demo/
 ```
 
+### 4. 패널 위치 계산 문제
+
+**문제**: 모든 패널의 위치(`position`)가 동일하게 계산되어 패널들이 겹치는 문제 발생
+
+**해결책**: Panel 클래스의 `calculatePosition` 메서드에서 패널 인덱스를 고려하도록 수정
+```typescript
+// 수정 전
+private calculatePosition(): void {
+  this._position = -this._size * this._align;
+}
+
+// 수정 후
+private calculatePosition(): void {
+  this._position = (this._index * this._size) - (this._size * this._align);
+}
+```
+
+### 5. 카메라 이동 방향 문제
+
+**문제**: 다음 패널로 이동할 때 카메라가 반대 방향으로 움직이는 문제 발생
+
+**해결책**: Camera 클래스의 `updatePosition` 메서드에서 타겟 포지션 계산 시 패널 위치에 마이너스 부호를 추가
+```typescript
+// 수정 전
+this._targetPosition = currentPanel.position + (viewportSize - currentPanel.size) / 2;
+
+// 수정 후
+this._targetPosition = -currentPanel.position + (viewportSize - currentPanel.size) / 2;
+```
+이는 카메라와 패널의 이동 방향이 반대라는 점을 고려한 것입니다. 패널을 오른쪽으로 보여주려면 카메라는 왼쪽으로 이동해야 합니다.
+
 ## 기능 설명
 
 ### 기본 동작 원리
@@ -326,13 +357,12 @@ cp dist/flicking.js dist/flicking.css demo/
    - Control 인스턴스를 통해 카메라 위치 변경
    - 패널들에 CSS transform 적용하여 움직임 표현
 
-### 구현된 기능
-
-- 뷰포트와 카메라 컴포넌트를 통한 기본 UI 구조
-- 패널 컴포넌트를 통한 개별 슬라이드 관리
-- 이전/다음 슬라이드로 이동 기능
-- 특정 인덱스로 이동 기능
-- 기본적인 이벤트 처리 (ready 이벤트)
+3. **카메라와 패널의 관계**:
+   - 패널은 카메라 엘리먼트의 자식으로 순차적으로 배치됨
+   - 패널 이동은 카메라 이동의 반대 방향으로 이루어짐
+   - 인덱스 0에서 인덱스 1로 이동할 때:
+     - 패널은 오른쪽으로 배치되어 있음
+     - 카메라는 왼쪽으로 이동하여 다음 패널을 보여줌
 
 ## 다음 단계 계획
 
