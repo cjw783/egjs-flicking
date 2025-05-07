@@ -1,0 +1,62 @@
+{
+  "name": "egjs-flicking-from-scratch",
+  "version": "1.0.0",
+  "description": "Rebuilding egjs-flicking from scratch to understand its principles",
+  "main": "dist/flicking.cjs.js",
+  "module": "dist/flicking.esm.js",
+  "types": "declaration/index.d.ts",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.sass"
+  ],
+  "scripts": {
+    "start": "rollup -w --config ./rollup.config.dev.js",
+    "build": "npm run build:bundle && npm run build:declaration && npm run build:css",
+    "build:bundle": "rollup -c",
+    "build:declaration": "tsc -p tsconfig.declaration.json",
+    "build:css": "npm run build:sass && npm run build:css-prefix",
+    "build:sass": "sass sass/:dist/ --style=expanded --no-source-map",
+    "build:css-prefix": "postcss dist/*.css --replace --use autoprefixer --no-map",
+    "lint": "eslint src/**/*.ts",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "carousel",
+    "flicking",
+    "slider",
+    "touch",
+    "mobile"
+  ],
+  "author": "",
+  "license": "MIT",
+  "browserslist": [
+    "last 2 version",
+    "ie 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.35.0",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "rollup": "^2.41.5",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^2.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.58.3",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@egjs/component": "^3.0.4"
+  }
+} 

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "removeComments": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./declaration"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "node_modules"]
+} 

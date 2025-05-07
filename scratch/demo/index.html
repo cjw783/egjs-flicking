@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flicking Demo</title>
+  <link rel="stylesheet" href="flicking.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .flicking-viewport {
+      width: 500px;
+      height: 200px;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+    .panel {
+      width: 200px;
+      height: 100%;
+      margin-right: 10px;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      color: #333;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .controls button {
+      padding: 8px 16px;
+      margin: 0 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flicking Demo</h1>
+  
+  <div id="flicking" class="flicking-viewport">
+    <div class="flicking-camera">
+      <div class="panel">1</div>
+      <div class="panel">2</div>
+      <div class="panel">3</div>
+      <div class="panel">4</div>
+      <div class="panel">5</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+  </div>
+
+  <div class="info">
+    <p>Current Index: <span id="current-index">0</span></p>
+  </div>
+
+  <script src="flicking.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Initialize Flicking
+      const flicking = new Flicking("#flicking", {
+        align: "center",
+        defaultIndex: 0,
+        horizontal: true,
+        duration: 300
+      });
+
+      // Get control elements
+      const prevButton = document.getElementById("prev");
+      const nextButton = document.getElementById("next");
+      const currentIndexElement = document.getElementById("current-index");
+
+      // Update info
+      function updateInfo() {
+        currentIndexElement.textContent = flicking.index;
+      }
+
+      // Add event listeners
+      prevButton.addEventListener("click", function() {
+        flicking.prev();
+        updateInfo();
+      });
+
+      nextButton.addEventListener("click", function() {
+        flicking.next();
+        updateInfo();
+      });
+
+      // Initialize info
+      updateInfo();
+
+      // Listen for ready event using Component's on method
+      flicking.on("ready", function() {
+        console.log("Flicking is ready!");
+        updateInfo();
+      });
+    });
+  </script>
+</body>
+</html> 
