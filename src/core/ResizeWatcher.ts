@@ -25,6 +25,7 @@ class ResizeWatcher {
   private _options!: Required<ResizeWatherOptions>;
 
   public constructor(container: HTMLElement | string, options: ResizeWatherOptions = {}) {
+    console.log("ResizeWatcher Constructor");
     this._options = {
       resizeDebounce: 100,
       maxResizeDebounce: 0,

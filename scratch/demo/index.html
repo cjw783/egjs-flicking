@@ -45,6 +45,17 @@
       text-align: center;
       margin-bottom: 20px;
     }
+    .events-log {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 500px;
+      height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -68,10 +79,26 @@
   <div class="info">
     <p>Current Index: <span id="current-index">0</span></p>
   </div>
+  
+  <div class="events-log" id="events-log">
+    <p>Events Log:</p>
+  </div>
 
   <script src="flicking.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Get the EVENTS constant from flicking
+      const EVENTS = Flicking.EVENTS;
+      
+      // Log events to the events log
+      function logEvent(eventName, data) {
+        const eventsLog = document.getElementById("events-log");
+        const logEntry = document.createElement("div");
+        logEntry.innerHTML = `<strong>${eventName}</strong>: ${new Date().toLocaleTimeString()}`;
+        eventsLog.insertBefore(logEntry, eventsLog.firstChild);
+        console.log(eventName, data);
+      }
+      
       // Initialize Flicking
       const flicking = new Flicking("#flicking", {
         align: "center",
@@ -104,10 +131,29 @@
       // Initialize info
       updateInfo();
 
-      // Listen for ready event using Component's on method
-      flicking.on("ready", function() {
-        console.log("Flicking is ready!");
+      // Listen for events using Component's on method
+      flicking.on("ready", function(e) {
+        logEvent("ready", e);
         updateInfo();
+        
+        // Add additional debug info to confirm event was triggered
+        const infoDiv = document.querySelector(".info");
+        if (infoDiv) {
+          const statusEl = document.createElement("p");
+          statusEl.textContent = "✅ Ready event triggered successfully";
+          statusEl.style.color = "green";
+          infoDiv.appendChild(statusEl);
+        }
+      });
+      
+      // Register all important events
+      ["moveStart", "move", "moveEnd"].forEach(eventName => {
+        flicking.on(eventName, function(e) {
+          logEvent(eventName, e);
+          if (eventName === "moveEnd") {
+            updateInfo();
+          }
+        });
       });
     });
   </script>

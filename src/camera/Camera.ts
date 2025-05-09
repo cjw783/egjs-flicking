@@ -261,6 +261,7 @@ class Camera {
    * @return {this}
    */
   public init(): this {
+    console.log("Camera init()");
     const viewportEl = this._flicking.viewport.element;
 
     checkExistence(viewportEl.firstElementChild, "First element child of the viewport element");

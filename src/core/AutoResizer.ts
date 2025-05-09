@@ -16,6 +16,7 @@ class AutoResizer {
   }
 
   public constructor(flicking: Flicking) {
+    console.log("AutoResizer Constructor");
     this._flicking = flicking;
     this._enabled = false;
     this._resizeObserver = null;

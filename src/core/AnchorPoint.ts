@@ -50,6 +50,8 @@ class AnchorPoint {
     position: number;
     panel: Panel;
   }) {
+
+    console.log("AnchorPoint Constructor");
     this._index = index;
     this._pos = position;
     this._panel = panel;

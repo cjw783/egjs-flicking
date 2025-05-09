@@ -6,16 +6,15 @@ export interface ReadyEvent {}
 /**
  * Event type for before resize events
  */
-export interface BeforeResizeEvent {}
+export interface BeforeResizeEvent {
+  viewport: { width: number; height: number };
+}
 
 /**
  * Event type for after resize events
  */
 export interface AfterResizeEvent {
-  dimension: {
-    width: number;
-    height: number;
-  };
+  viewport: { width: number; height: number };
 }
 
 /**
@@ -45,12 +44,21 @@ export interface HoldEndEvent {
  */
 export interface MoveStartEvent {
   index: number;
+  isTrusted: boolean;
+  direction: string;
+  axesEvent?: {
+    inputEvent: any;
+    pos: {[key: string]: number};
+    delta: {[key: string]: number};
+    inputType: string;
+  };
 }
 
 /**
  * Event type for move events
  */
 export interface MoveEvent {
+  index: number;
   isTrusted: boolean;
   direction: string;
   axesEvent?: {
@@ -65,6 +73,7 @@ export interface MoveEvent {
  * Event type for move end events
  */
 export interface MoveEndEvent {
+  index: number;
   isTrusted: boolean;
   direction: string;
   axesEvent?: {

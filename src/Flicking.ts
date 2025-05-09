@@ -1188,6 +1188,8 @@ class Flicking extends Component<FlickingEvents> {
   ) {
     super();
 
+    console.log('Flicking Constructor')
+
     // Internal states
     this._initialized = false;
     this._plugins = [];
@@ -1255,6 +1257,8 @@ class Flicking extends Component<FlickingEvents> {
    */
   public init(): Promise<void> {
     if (this._initialized) return Promise.resolve();
+
+    console.log("Flicking init()");
 
     const camera = this._camera;
     const renderer = this._renderer;

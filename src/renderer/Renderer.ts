@@ -87,6 +87,7 @@ abstract class Renderer {
     align = ALIGN.CENTER,
     strategy
   }: RendererOptions) {
+    console.log("Renderer Constructor");
     this._flicking = null;
     this._panels = [];
     this._rendering = false;

@@ -60,6 +60,7 @@ class Viewport {
    * @param el A viewport element<ko>뷰포트 엘리먼트</ko>
    */
   public constructor(flicking: Flicking, el: HTMLElement) {
+    console.log("Viewport Constructor");
     this._flicking = flicking;
     this._el = el;
     this._width = 0;
